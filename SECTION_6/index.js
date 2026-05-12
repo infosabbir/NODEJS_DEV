@@ -5,9 +5,18 @@ const server = http.createServer();
 const products = [{ name: 'banana' }, { name: 'apple' }, { name: 'orange' }];
 
 server.on('request', (req, res) => {
-    console.log(req.url);
-    if (req.url === '/products') {
-        if (req.method === 'GET') {
+    if (req.url === '/') {
+        res.setHeader('Content-Type', 'text/html');
+        res.end(`
+            <form action="/products" method="POST">
+            <input type="text" name="productName"/>
+            <button type="submit">Post</button>
+            </form>
+            `);
+    } else if (req.url === '/products') {
+        if (req.method == "POST") {
+            res.end('Post Request Handled!');
+        } else if (req.method === 'GET') {
             res.setHeader('Content-Type', 'application/json');
             res.statusCode = 200;
             res.end(JSON.stringify(products));
