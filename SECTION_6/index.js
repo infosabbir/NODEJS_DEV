@@ -13,21 +13,30 @@ function parse(req) {
         });
 
         req.on('end', () => {
-            try {
+            if (body.includes('productName')) {
                 reslove({ name: body.replace("productName=", "") });
-            } catch (err) {
-                reject(err);
+            } else {
+                reject('Invalid data!');
             }
         });
     });
 }
 
+server.prependListener("request", (req, res) => {
+    console.log(`Incoming ${req.method} request for ${req.url}`);
+    req.message = 'Message from Middleware';
+    req.error = 'Error coming from the Middleware';
+
+});
+
 server.on('request', (req, res) => {
+    console.log(req.message, "\n", req.error);
+
     if (req.url === '/') {
         res.setHeader('Content-Type', 'text/html');
         res.end(`
             <form action="/products" method="POST">
-            <input type="text" name="productName"/>
+            <input type="text" name="productName000"/>
             <button type="submit">Post</button>
             </form>
             `);
@@ -39,6 +48,9 @@ server.on('request', (req, res) => {
                 res.end(`Product created!\n
                     ${JSON.stringify(products)}
                     `);
+            }).catch(err => {
+                res.statusCode = 400;
+                res.end(err);
             });
         } else if (req.method === 'GET') {
             res.setHeader('Content-Type', 'application/json');
