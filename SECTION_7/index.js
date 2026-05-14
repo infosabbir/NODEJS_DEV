@@ -9,6 +9,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
     console.log('Second Middleware');
+    res.send('<h1>response from the second middleware</h1>');
 })
 
 app.listen(3000, () => console.log('Listening port on 3000'))
