@@ -1,4 +1,6 @@
 const express = require("express");
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
 const app = express();
 
@@ -6,19 +8,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req, res, next) => {
-    console.log('root route');
+    console.log('Root Router');
     res.send('<h1>response from root (/) route!!</h1>');
 });
 
-app.post("/add-product", (req, res, next) => {
-    console.log(req.body);
+app.use(adminRoutes);
 
-    res.send('<h1>response from the /add-product Route!</h1>');
-});
+app.use(shopRoutes);
 
-app.get("/product", (req, res, next) => {
-    console.log('Second Middleware');
-    res.send('<h1>response from the /product route!</h1>');
-})
+
 
 app.listen(3000, () => console.log('Listening port on 3000'))
