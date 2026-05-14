@@ -2,6 +2,9 @@ const express = require("express");
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 app.get("/", (req, res, next) => {
     console.log('root route');
     res.send('<h1>response from root (/) route!!</h1>');
@@ -9,7 +12,7 @@ app.get("/", (req, res, next) => {
 
 app.post("/add-product", (req, res, next) => {
     console.log(req.body);
-    console.log('first middleware');
+
     res.send('<h1>response from the /add-product Route!</h1>');
 });
 
