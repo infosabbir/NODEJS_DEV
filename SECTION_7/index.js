@@ -7,14 +7,14 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res, next) => {
-    console.log('Root Router');
-    res.send('<h1>response from root (/) route!!</h1>');
+app.use('/', (req, res, next) => {
+    console.log('always runs');
+    next();
 });
 
-app.use(adminRoutes);
+app.use('/admin', adminRoutes);
 
-app.use(shopRoutes);
+app.use('/shop', shopRoutes);
 
 
 
