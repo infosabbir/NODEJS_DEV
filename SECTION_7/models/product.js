@@ -17,25 +17,28 @@ module.exports = class Product {
     }
 
     async save() {
-        fs.readFile(productDbPath, 'utf-8', (err, data) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-
-            const productData = JSON.parse(data);
-
-            productData.push({ id: productData.length + 1, name: this.name, price: this.price });
-
-            fs.writeFile(productDbPath, JSON.stringify(productData), 'utf-8', (err) => {
+        return new Promise((resolve, reject) => {
+            fs.readFile(productDbPath, 'utf-8', (err, data) => {
                 if (err) {
-                    console.error(err);
+                    reject(err.message);
                     return;
-
                 }
-                console.log('DATA APPENDED SUCCESSFULLY!');
-            })
+
+                const productData = JSON.parse(data);
+
+                productData.push({ id: productData.length + 1, name: this.name, price: this.price });
+
+                fs.writeFile(productDbPath, JSON.stringify(productData), 'utf-8', (err) => {
+                    if (err) {
+                        reject(err.message);
+                        return;
+
+                    }
+                    resolve('DATA APPENDED SUCCESSFULLY!');
+                })
+            });
         });
+
     }
 
     static findAll() {
