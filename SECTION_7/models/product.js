@@ -37,4 +37,10 @@ module.exports = class Product {
             })
         });
     }
+
+    static findAll() {
+        const data = fs.readFileSync(productDbPath, 'utf-8');
+
+        return JSON.parse(data);
+    }
 }

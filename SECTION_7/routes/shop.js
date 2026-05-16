@@ -1,14 +1,13 @@
 
 const express = require("express");
+const Product = require("../models/product")
 
 const router = express.Router();
 
-router.get("/product", (req, res, next) => {
-    console.log('Shop Router');
-    const product = req.product;
-    res.send(`
-        <h1>Shop Router</h1>
-        `);
+router.get("/products", (req, res) => {
+    const product = Product.findAll();
+
+    res.status(200).json({ product });
 });
 
 module.exports = router;
